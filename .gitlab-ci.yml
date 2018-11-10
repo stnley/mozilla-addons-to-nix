@@ -1,0 +1,16 @@
+image: nixos/nix:latest
+
+variables:
+  NIX_PATH: "nixpkgs=https://nixos.org/channels/nixos-18.09/nixexprs.tar.xz"
+
+nixpkgs-overlay:
+  stage: build
+  script:
+    - nix-build
+    - mkdir overlay
+    - ./result/bin/nix-firefox-addons overlay
+    - tar -cvzf overlay.tar.gz overlay
+  artifacts:
+    paths:
+      - overlay
+      - overlay.tar.gz
