@@ -181,7 +181,7 @@ generateFirefoxAddonPackages :: [AddonReq] -> IO Text
 generateFirefoxAddonPackages reqs =
   do
     sess <- Wreq.newAPISession
-    addons <- mapM (fetchAndModify sess) reqs
+    addons <- sortOn (^. addonSlug) <$> mapM (fetchAndModify sess) reqs
     pure . show . prettyNix . packageFun $ addons
   where
     fetchAndModify sess AddonReq {..} =
