@@ -18,10 +18,12 @@ addonSlugs = [ "cookie-autodelete"
              , "https-everywhere"
              , "link-cleaner"
              , "octotree"
-             , "privacy-badger17"
+             , AddonReq "privacy-badger17"
+                        (addonSlug .~ "privacy-badger")
              , "reddit-enhancement-suite"
              , "save-page-we"
-             , "styl-us"
+             , AddonReq "styl-us"
+                        (addonSlug .~ "stylus")
              , "ublock-origin"
              ]
 
