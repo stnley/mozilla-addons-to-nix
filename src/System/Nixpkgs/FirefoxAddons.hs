@@ -166,7 +166,7 @@ addonUrl slug =
   addonsApiBase
   <> "/addons/addon/"
   <> slug
-  <> "/?app=firefox&appversion=63.0&lang=en-US"
+  <> "/?app=firefox&lang=en-US"
 
 fetchJson :: Wreq.Session -> Text -> IO AddonData
 fetchJson sess slug = view responseBody <$> resp
