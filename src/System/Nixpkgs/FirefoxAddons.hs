@@ -168,14 +168,14 @@ addonUrl slug =
   <> slug
   <> "/?app=firefox&lang=en-US"
 
-fetchJson :: Wreq.Session -> Text -> IO AddonData
-fetchJson sess slug = view responseBody <$> resp
+fetchAddonData :: Wreq.Session -> Text -> IO AddonData
+fetchAddonData sess slug =
+    do
+      addon <- view responseBody <$> fetch
+      putStrLn $ "Fetched " <> slug <> " version " <> addon ^. addonVersion
+      return addon
   where
-    resp =
-      do
-        putStrLn $ "Fetching " <> slug
-        r <- Wreq.get sess (toString $ addonUrl slug)
-        asJSON r
+    fetch = Wreq.get sess (toString $ addonUrl slug) >>= asJSON
 
 generateFirefoxAddonPackages :: [AddonReq] -> IO Text
 generateFirefoxAddonPackages reqs =
@@ -185,4 +185,4 @@ generateFirefoxAddonPackages reqs =
     pure . show . prettyNix . packageFun $ addons
   where
     fetchAndModify sess AddonReq {..} =
-      _addonReqModify <$> fetchJson sess _addonReqSlug
+      _addonReqModify <$> fetchAddonData sess _addonReqSlug
