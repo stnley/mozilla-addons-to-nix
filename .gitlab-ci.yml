@@ -14,3 +14,14 @@ nixpkgs-overlay:
     paths:
       - overlay
       - overlay.tar.gz
+
+pages:
+  stage: deploy
+  script:
+    - mkdir public
+    - cp overlay.tar.gz public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
