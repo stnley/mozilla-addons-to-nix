@@ -12,13 +12,14 @@ module System.Nixpkgs.FirefoxAddons
   , AddonFile
   , Hash
   , generateFirefoxAddonPackages
+  , addonDescription
+  , addonFile
+  , addonHomepage
   , addonId
+  , addonLicenseId
+  , addonNixName
   , addonSlug
   , addonVersion
-  , addonFile
-  , addonDescription
-  , addonLicenseId
-  , addonHomepage
   ) where
 
 import           Control.Lens
@@ -52,6 +53,7 @@ data AddonFile =
 data AddonData =
   AddonData { _addonId          :: Text
             , _addonSlug        :: Text
+            , _addonNixName     :: Text
             , _addonVersion     :: Text
             , _addonFile        :: AddonFile
             , _addonDescription :: Text
@@ -117,10 +119,9 @@ license licenseId = mkSym . ("licenses." <>) <$> licenses ^. at licenseId
 addonDrv :: AddonData -> NExpr
 addonDrv addon = "buildFirefoxXpiAddon" @@ fields
   where
-    name = addon ^. addonSlug <> "-" <> addon ^. addonVersion
-
     fields =
-      attrsE [ ("name", mkStr name)
+      attrsE [ ("pname", mkStr $ addon ^. addonNixName)
+             , ("version", mkStr $ addon ^. addonVersion)
              , ("addonId", mkStr $ addon ^. addonId)
              , ("url", mkStr $ file ^. addonFileUrl)
              , (hashAttrName, mkStr $ file ^. addonFileHash . hashValue)
@@ -149,7 +150,7 @@ addonDrvs :: [AddonData] -> NExpr
 addonDrvs = attrsE . map attr
   where
     quoted s = "\"" <> s <> "\""
-    attr addon = (quoted $ addon ^. addonSlug, addonDrv addon)
+    attr addon = (quoted $ addon ^. addonNixName, addonDrv addon)
 
 packageFun :: [AddonData] -> NExpr
 packageFun addons =
@@ -183,7 +184,7 @@ generateFirefoxAddonPackages :: [AddonReq] -> IO Text
 generateFirefoxAddonPackages reqs =
   do
     sess <- Wreq.newAPISession
-    addons <- sortOn (^. addonSlug) <$> mapM (fetchAndModify sess) reqs
+    addons <- sortOn (^. addonNixName) <$> mapM (fetchAndModify sess) reqs
     pure . show . prettyNix . packageFun $ addons
   where
     fetchAndModify sess AddonReq {..} =

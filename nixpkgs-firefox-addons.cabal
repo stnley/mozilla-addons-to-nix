@@ -11,16 +11,11 @@ maintainer:          robert@rycee.net
 category:            System
 build-type:          Simple
 extra-source-files:  ChangeLog.md
-data-dir:            data
-data-files:          firefox-addons.nix
 cabal-version:       >=1.10
 
 executable nix-firefox-addons
   main-is:             Main.hs
-  other-modules:
-    Paths_nixpkgs_firefox_addons
-    , Prelude
-    , System.Nixpkgs.FirefoxAddons
+  other-modules:       Prelude, System.Nixpkgs.FirefoxAddons
   build-depends:
                 aeson
               , base-noprelude >=4.11
