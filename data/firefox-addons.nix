@@ -20,9 +20,15 @@ let
       '';
     };
 
+  deprecate = x:
+    let
+      msg = "The Firefox Add-ons channel will be removed soon, please use the NUR instead: https://gitlab.com/rycee/nur-expressions/blob/master/README.adoc";
+    in
+      builtins.trace "[1;31mwarning: ${msg}[0m" x;
+
 in
 
-{
+deprecate {
   firefox-addons = super.callPackage ./generated-firefox-addons.nix {
     inherit buildFirefoxXpiAddon;
   };
