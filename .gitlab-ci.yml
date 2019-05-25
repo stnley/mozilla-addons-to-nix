@@ -1,7 +1,7 @@
 image: nixos/nix:latest
 
 variables:
-  NIX_PATH: "nixpkgs=https://nixos.org/channels/nixos-18.09/nixexprs.tar.xz"
+  NIX_PATH: "nixpkgs=https://nixos.org/channels/nixpkgs-unstable/nixexprs.tar.xz"
 
 nixpkgs-overlay:
   stage: build
