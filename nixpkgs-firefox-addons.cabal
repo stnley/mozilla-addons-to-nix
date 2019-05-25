@@ -13,7 +13,7 @@ build-type:          Simple
 extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
-executable nix-firefox-addons
+executable nixpkgs-firefox-addons
   main-is:             Main.hs
   other-modules:       Prelude, System.Nixpkgs.FirefoxAddons
   build-depends:
