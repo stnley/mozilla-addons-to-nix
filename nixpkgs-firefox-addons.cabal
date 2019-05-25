@@ -28,7 +28,7 @@ executable nix-firefox-addons
               , hnix >= 0.5
               , lens
               , lens-aeson
-              , relude >= 0.1.1
+              , relude >= 0.4.0
               , text
               , wreq >= 0.5
   hs-source-dirs:      src

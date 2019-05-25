@@ -47,7 +47,7 @@ main =
     outDir <- parseArgs
     generatedCode <- generateFirefoxAddonPackages addonSlugs
     putTextLn "Writing generated-firefox-addons.nix"
-    writeFile (outDir <> "/generated-firefox-addons.nix") generatedCode
+    writeFileText (outDir <> "/generated-firefox-addons.nix") generatedCode
     putTextLn "Writing default.nix"
     mainNixFile <- getDataFileName "firefox-addons.nix"
     copyFile mainNixFile (outDir <> "/default.nix")

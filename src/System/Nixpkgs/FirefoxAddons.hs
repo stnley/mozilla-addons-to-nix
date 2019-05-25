@@ -90,7 +90,9 @@ instance FromJSON AddonData where
         _addonLicenseId <- licenseObj .: "id"
 
         addonFiles :: [AddonFile] <- currentVersionObj .: "files"
-        _addonFile <- maybe (fail "No file to download") return (safeHead addonFiles)
+        _addonFile <- maybe (fail "No file to download")
+                            (return . head)
+                            (nonEmpty addonFiles)
 
         return AddonData {..}
 
@@ -172,7 +174,7 @@ fetchAddonData :: Wreq.Session -> Text -> IO AddonData
 fetchAddonData sess slug =
     do
       addon <- view responseBody <$> fetch
-      putStrLn $ "Fetched " <> slug <> " version " <> addon ^. addonVersion
+      putTextLn $ "Fetched " <> slug <> " version " <> addon ^. addonVersion
       return addon
   where
     fetch = Wreq.get sess (toString $ addonUrl slug) >>= asJSON
