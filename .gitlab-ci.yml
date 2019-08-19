@@ -1,8 +1,5 @@
 image: nixos/nix:latest
 
-variables:
-  NIX_PATH: "nixpkgs=https://nixos.org/channels/nixpkgs-unstable/nixexprs.tar.xz"
-
 build:
   stage: build
   script:
