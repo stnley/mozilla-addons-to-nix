@@ -10,6 +10,20 @@ in
 
 { pkgs ? import nixpkgs {} }:
 
-pkgs.haskellPackages.developPackage {
+let
+
+  haskellPackages = pkgs.haskellPackages;
+
+in
+
+haskellPackages.developPackage {
   root = ./.;
+  modifier = drv: pkgs.haskell.lib.overrideCabal drv (attrs: {
+    buildTools =
+      (attrs.buildTools or [])
+      ++ [
+        haskellPackages.brittany
+        haskellPackages.cabal-install
+      ];
+  });
 }
