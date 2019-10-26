@@ -110,6 +110,7 @@ licenses = fromList [ (6, "gpl3")
                     , (13, "gpl2")
                     , (22, "mit")
                     , (3338, "mpl20")
+                    , (5296, "bsd3")
                     ]
 
 license :: Int -> Maybe NExpr
