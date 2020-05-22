@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric       #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE QuasiQuotes         #-}
 {-# LANGUAGE RecordWildCards     #-}
@@ -10,12 +11,14 @@ module System.Nixpkgs.FirefoxAddons
   ( AddonReq(..)
   , AddonData
   , AddonFile
+  , AddonLicense(..)
   , Hash
   , generateFirefoxAddonPackages
   , addonDescription
   , addonFile
   , addonHomepage
   , addonId
+  , addonLicense
   , addonLicenseId
   , addonNixName
   , addonSlug
@@ -50,6 +53,15 @@ data AddonFile =
             }
   deriving (Eq, Show)
 
+data AddonLicense =
+  AddonLicensePredefined { addonLicenseShortName :: Text }
+  | AddonLicenseCustom { addonLicenseShortName :: Text
+                       , addonLicenseFullName :: Text
+                       , addonLicenseUrl :: Text
+                       , addonLicenseFree :: Bool
+                       }
+  deriving (Eq, Generic, Show)
+
 data AddonData =
   AddonData { _addonId          :: Text
             , _addonSlug        :: Text
@@ -58,12 +70,14 @@ data AddonData =
             , _addonFile        :: AddonFile
             , _addonDescription :: Text
             , _addonLicenseId   :: Int
+            , _addonLicense     :: Maybe AddonLicense
             , _addonHomepage    :: Maybe Text
             }
   deriving (Eq, Show)
 
 makeLenses ''Hash
 makeLenses ''AddonFile
+makeLenses ''AddonLicense
 makeLenses ''AddonData
 
 instance IsString AddonReq where
@@ -90,6 +104,7 @@ instance FromJSON AddonData where
 
         licenseObj <- currentVersionObj .: "license"
         _addonLicenseId <- licenseObj .: "id"
+        let _addonLicense = licenses ^. at _addonLicenseId
 
         addonFiles :: [AddonFile] <- currentVersionObj .: "files"
         _addonFile <- maybe (fail "No file to download")
@@ -104,20 +119,27 @@ parseHash raw =
     [ "sha256", hash ] -> pure $ Hash hash Sha256
     _                  -> fail . toString $ "Unknown hash: " <> raw
 
-licenses :: IntMap Text
-licenses = fromList [ (6, "gpl3")
-                    , (12, "lgpl3")
-                    , (13, "gpl2")
-                    , (22, "mit")
-                    , (3338, "mpl20")
-                    , (4160, "asl20")
-                    , (4814, "cc0")
-                    , (5296, "bsd3")
-                    , (7551, "isc")
+licenses :: IntMap AddonLicense
+licenses = fromList [ (6, AddonLicensePredefined "gpl3")
+                    , (12, AddonLicensePredefined "lgpl3")
+                    , (13, AddonLicensePredefined "gpl2")
+                    , (22, AddonLicensePredefined "mit")
+                    , (3338, AddonLicensePredefined "mpl20")
+                    , (4160, AddonLicensePredefined "asl20")
+                    , (4814, AddonLicensePredefined "cc0")
+                    , (5296, AddonLicensePredefined "bsd3")
+                    , (7551, AddonLicensePredefined "isc")
                     ]
 
-license :: Int -> Maybe NExpr
-license licenseId = mkSym . ("licenses." <>) <$> licenses ^. at licenseId
+license :: AddonLicense -> NExpr
+license AddonLicensePredefined {..} =
+  mkSym ("licenses." <> addonLicenseShortName)
+license AddonLicenseCustom {..} = attrsE
+  [ ("shortName", mkStr addonLicenseShortName)
+  , ("fullName" , mkStr addonLicenseFullName)
+  , ("url"      , mkStr addonLicenseUrl)
+  , ("free"     , mkBool addonLicenseFree)
+  ]
 
 -- | Builds a Nix derivation for the given add-on.
 addonDrv :: AddonData -> NExpr
@@ -146,7 +168,7 @@ addonDrv addon = "buildFirefoxXpiAddon" @@ fields
         <>
         [ ("description", mkStr $ addon ^. addonDescription) ]
         <>
-        optAttr "license" (license (addon ^. addonLicenseId))
+        optAttr "license" (license <$> addon ^. addonLicense)
         <>
         [ ("platforms", "platforms.all") ]
 
