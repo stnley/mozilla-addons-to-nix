@@ -1,5 +1,5 @@
 name:                nixpkgs-firefox-addons
-version:             0.5.0
+version:             0.6.0
 synopsis:            Tool generating a Nix package set of Firefox addons
 -- description:
 homepage:            https://gitlab.com/rycee/nixpkgs-firefox-addons
