@@ -25,7 +25,7 @@ module System.Nixpkgs.FirefoxAddons
   , addonVersion
   ) where
 
-import           Control.Lens
+import           Lens.Micro.Platform
 import           Data.Aeson
 import qualified Data.Text            as T
 import           Network.Wreq         (asJSON, responseBody)

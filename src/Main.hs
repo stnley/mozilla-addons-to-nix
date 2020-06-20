@@ -4,7 +4,7 @@
 
 module Main (main) where
 
-import Control.Lens
+import Lens.Micro.Platform
 import Data.Aeson
 import Data.Char (isUpper)
 import Data.Text (span, stripPrefix, toLower)

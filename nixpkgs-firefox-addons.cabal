@@ -21,8 +21,8 @@ executable nixpkgs-firefox-addons
               , base-noprelude >=4.11
               , directory
               , hnix >= 0.5
-              , lens
-              , lens-aeson
+              , microlens-aeson
+              , microlens-platform
               , relude >= 0.4.0
               , text
               , wreq >= 0.5
