@@ -129,6 +129,7 @@ licenses = fromList [ (6, AddonLicensePredefined "gpl3")
                     , (4814, AddonLicensePredefined "cc0")
                     , (5296, AddonLicensePredefined "bsd3")
                     , (7551, AddonLicensePredefined "isc")
+                    , (7770, AddonLicensePredefined "agpl3")
                     ]
 
 license :: AddonLicense -> NExpr
