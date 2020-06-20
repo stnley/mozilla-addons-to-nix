@@ -1,29 +1,26 @@
 let
 
-  # Pinned Nixpkgs to known working commit.
+  # Pinned Nixpkgs to known working commit. Pinned 2020-06-20.
   nixpkgs = builtins.fetchTarball {
-   url = "https://github.com/NixOS/nixpkgs/archive/bc8bc2c7cf3066f8a4e0c365651f968195338422.tar.gz";
-   sha256 = "130y0yqh1snkadgwdgf5hbdhwh1sz9qw5qi8ji9z3n271f779551";
+    url =
+      "https://github.com/NixOS/nixpkgs/archive/a84cbb60f0296210be03c08d243670dd18a3f6eb.tar.gz";
+    sha256 = "04j07c98iy66hpzha7brz867dcl9lkflck43xvz09dfmlvqyzmiz";
   };
 
-in
-
-{ pkgs ? import nixpkgs {} }:
+in { pkgs ? import nixpkgs { } }:
 
 let
 
   haskellPackages = pkgs.haskellPackages;
 
-in
-
-haskellPackages.developPackage {
+in haskellPackages.developPackage {
   root = ./.;
-  modifier = drv: pkgs.haskell.lib.overrideCabal drv (attrs: {
-    buildTools =
-      (attrs.buildTools or [])
-      ++ [
+  modifier = drv:
+    pkgs.haskell.lib.overrideCabal drv (attrs: {
+      buildTools = (attrs.buildTools or [ ]) ++ [
         haskellPackages.brittany
         haskellPackages.cabal-install
+        pkgs.nixfmt
       ];
-  });
+    });
 }
