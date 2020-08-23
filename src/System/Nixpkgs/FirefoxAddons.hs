@@ -128,6 +128,7 @@ licenses = fromList [ (6, AddonLicensePredefined "gpl3")
                     , (4160, AddonLicensePredefined "asl20")
                     , (4814, AddonLicensePredefined "cc0")
                     , (5296, AddonLicensePredefined "bsd3")
+                    , (6982, AddonLicensePredefined "cc-by-nc-sa-30")
                     , (7551, AddonLicensePredefined "isc")
                     , (7770, AddonLicensePredefined "agpl3")
                     ]
