@@ -18,8 +18,8 @@ in haskellPackages.developPackage {
   modifier = drv:
     pkgs.haskell.lib.overrideCabal drv (attrs: {
       buildTools = (attrs.buildTools or [ ]) ++ [
-        haskellPackages.brittany
         haskellPackages.cabal-install
+        haskellPackages.haskell-language-server
         pkgs.nixfmt
       ];
     });
