@@ -164,7 +164,7 @@ addonDrv addon = "buildFirefoxXpiAddon" @@ fields
 
     optAttr n = toList . fmap (n,)
 
-    meta = mkWith "stdenv.lib"
+    meta = mkWith "lib"
       $ attrsE
       $ optAttr "homepage" (mkStr <$> addon ^. addonHomepage)
         <>
@@ -186,6 +186,7 @@ packageFun addons =
   where
     params = [ ("buildFirefoxXpiAddon", Nothing)
              , ("fetchurl", Nothing)
+             , ("lib", Nothing)
              , ("stdenv", Nothing)
              ]
 
