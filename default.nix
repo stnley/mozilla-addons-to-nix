@@ -14,12 +14,14 @@ let
   haskellPackages = pkgs.haskellPackages;
 
 in haskellPackages.developPackage {
-  root = ./.;
+  name = "nixpkgs-firefox-addons";
+  root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
   modifier = drv:
     pkgs.haskell.lib.overrideCabal drv (attrs: {
       buildTools = (attrs.buildTools or [ ]) ++ [
         haskellPackages.cabal-install
         haskellPackages.haskell-language-server
+        haskellPackages.hoogle
         pkgs.nixfmt
       ];
     });
