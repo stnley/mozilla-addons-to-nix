@@ -20,10 +20,10 @@ executable nixpkgs-firefox-addons
                 aeson
               , base-noprelude >=4.11
               , directory
-              , hnix >= 0.5
+              , hnix >= 0.13
               , microlens-aeson
               , microlens-platform
-              , relude >= 0.4.0
+              , relude >= 1.0.0
               , text
               , wreq >= 0.5
   hs-source-dirs:      src

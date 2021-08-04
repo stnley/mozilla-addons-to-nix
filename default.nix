@@ -1,28 +1,31 @@
 let
 
-  # Pinned Nixpkgs to known working commit. Pinned 2020-09-11.
+  # Pinned Nixpkgs to known working commit. Pinned 2021-08-09.
   nixpkgs = builtins.fetchTarball {
     url =
-      "https://github.com/NixOS/nixpkgs/archive/6d4b93323e7f78121f8d6db6c59f3889aa1dd931.tar.gz";
-    sha256 = "0g2j41cx2w2an5d9kkqvgmada7ssdxqz1zvjd7hi5vif8ag0v5la";
+      "https://github.com/NixOS/nixpkgs/archive/67c80531be622641b5b2ccc3a7aff355cb02476b.tar.gz";
+    sha256 = "02v7fa2l6nhj6hb9czsc0czld9y735di3yxdlh3247yfwipl8473";
   };
 
-in { pkgs ? import nixpkgs { } }:
+in { pkgs ? import nixpkgs { }, ghc ? "ghc8104" }:
 
 let
 
-  haskellPackages = pkgs.haskellPackages;
+  haskellPackages = pkgs.haskell.packages.${ghc}.override {
+    overrides = self: super: {
+      # TODO: Remove this override when haskellPackages.relude >= 1.0.0.
+      relude = self.relude_1_0_0_1;
+    };
+  };
 
 in haskellPackages.developPackage {
   name = "nixpkgs-firefox-addons";
   root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
   modifier = drv:
-    pkgs.haskell.lib.overrideCabal drv (attrs: {
-      buildTools = (attrs.buildTools or [ ]) ++ [
-        haskellPackages.cabal-install
-        haskellPackages.haskell-language-server
-        haskellPackages.hoogle
-        pkgs.nixfmt
-      ];
-    });
+    pkgs.haskell.lib.addBuildTools drv [
+      haskellPackages.cabal-install
+      haskellPackages.haskell-language-server
+      haskellPackages.hoogle
+      pkgs.nixfmt
+    ];
 }

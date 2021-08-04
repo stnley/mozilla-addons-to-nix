@@ -6,11 +6,11 @@ module Main (main) where
 
 import Data.Aeson
 import Data.Char (isUpper)
-import Data.Text (span, stripPrefix, toLower)
+import qualified Data.Text as T
 import GHC.IO.Encoding (setLocaleEncoding, utf8)
 import Lens.Micro.Platform
 import qualified Relude.Unsafe as Unsafe
-import System.Environment (getArgs, getProgName)
+import System.Environment (getProgName)
 import qualified System.Nixpkgs.FirefoxAddons as FA
 
 newtype AddonLicense = AddonLicense {getAddonLicense :: FA.AddonLicense}
@@ -18,21 +18,21 @@ newtype AddonLicense = AddonLicense {getAddonLicense :: FA.AddonLicense}
 
 instance FromJSON AddonLicense where
   parseJSON =
-    let toLowerInit (h, t) = toLower h <> t
+    let toLowerInit (h, t) = T.toLower h <> t
         opts =
           defaultOptions
             { constructorTagModifier =
                 toString
-                  . toLower
+                  . T.toLower
                   . Unsafe.fromJust
-                  . stripPrefix "AddonLicense"
+                  . T.stripPrefix "AddonLicense"
                   . toText,
               fieldLabelModifier =
                 toString
                   . toLowerInit
-                  . span isUpper
+                  . T.span isUpper
                   . Unsafe.fromJust
-                  . stripPrefix "addonLicense"
+                  . T.stripPrefix "addonLicense"
                   . toText
             }
      in fmap AddonLicense . genericParseJSON opts
