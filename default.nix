@@ -7,7 +7,8 @@ let
     sha256 = "02v7fa2l6nhj6hb9czsc0czld9y735di3yxdlh3247yfwipl8473";
   };
 
-in { pkgs ? import nixpkgs { }, ghc ? "ghc8104" }:
+in { pkgs ? import nixpkgs { }, ghc ? "ghc8104"
+, returnShellEnv ? pkgs.lib.inNixShell }:
 
 let
 
@@ -19,6 +20,8 @@ let
   };
 
 in haskellPackages.developPackage {
+  inherit returnShellEnv;
+
   name = "nixpkgs-firefox-addons";
   root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
   modifier = drv:
