@@ -11,16 +11,10 @@ import GHC.IO.Encoding (setLocaleEncoding, utf8)
 import Lens.Micro.Platform
 import qualified Relude.Unsafe as Unsafe
 import System.Environment (getArgs, getProgName)
-import System.Nixpkgs.FirefoxAddons
+import qualified System.Nixpkgs.FirefoxAddons as FA
 
-data Addon = Addon
-  { slug :: Text,
-    pname :: Maybe Text,
-    license :: Maybe AddonLicense
-  }
+newtype AddonLicense = AddonLicense {getAddonLicense :: FA.AddonLicense}
   deriving (Show, Generic)
-
-instance FromJSON Addon
 
 instance FromJSON AddonLicense where
   parseJSON =
@@ -41,7 +35,16 @@ instance FromJSON AddonLicense where
                   . stripPrefix "addonLicense"
                   . toText
             }
-     in genericParseJSON opts
+     in fmap AddonLicense . genericParseJSON opts
+
+data Addon = Addon
+  { slug :: Text,
+    pname :: Maybe Text,
+    license :: Maybe AddonLicense
+  }
+  deriving (Show, Generic)
+
+instance FromJSON Addon
 
 data CmdArgs = CmdArgs
   { inputFile :: FilePath,
@@ -68,12 +71,12 @@ parseArgs = getArgs >>= parse
 fetchAddons :: FilePath -> [Addon] -> IO ()
 fetchAddons outputFile addons = addonsExpr >>= writeFileText outputFile
   where
-    addonsExpr = generateFirefoxAddonPackages . map mkAddonReq $ addons
+    addonsExpr = FA.generateFirefoxAddonPackages . map mkAddonReq $ addons
     mkAddonReq Addon {..} =
-      AddonReq
+      FA.AddonReq
         slug
-        ( maybe id (set addonLicense . Just) license
-            . maybe id (addonNixName .~) pname
+        ( maybe id (set FA.addonLicense . Just . getAddonLicense) license
+            . maybe id (FA.addonNixName .~) pname
         )
 
 printAndPanic :: String -> IO ()
