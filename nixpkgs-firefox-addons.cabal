@@ -27,4 +27,5 @@ executable nixpkgs-firefox-addons
               , text
               , wreq >= 0.5
   hs-source-dirs:      src
+  ghc-options:         -Wall
   default-language:    Haskell2010
