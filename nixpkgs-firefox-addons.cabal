@@ -1,6 +1,6 @@
 cabal-version:      2.2
 name:               nixpkgs-firefox-addons
-version:            0.8.0
+version:            0.8.1
 synopsis:           Tool generating a Nix package set of Firefox addons
 homepage:           https://gitlab.com/rycee/nixpkgs-firefox-addons
 license:            GPL-3.0-or-later
