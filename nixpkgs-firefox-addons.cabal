@@ -1,31 +1,33 @@
-name:                nixpkgs-firefox-addons
-version:             0.8.0
-synopsis:            Tool generating a Nix package set of Firefox addons
--- description:
-homepage:            https://gitlab.com/rycee/nixpkgs-firefox-addons
-license:             GPL-3
-license-file:        LICENSE
-author:              Robert Helgesson
-maintainer:          robert@rycee.net
--- copyright:
-category:            System
-build-type:          Simple
-extra-source-files:  ChangeLog.md
-cabal-version:       >=1.10
+cabal-version:      2.2
+name:               nixpkgs-firefox-addons
+version:            0.8.0
+synopsis:           Tool generating a Nix package set of Firefox addons
+homepage:           https://gitlab.com/rycee/nixpkgs-firefox-addons
+license:            GPL-3.0-or-later
+license-file:       LICENSE
+author:             Robert Helgesson <robert@rycee.net>
+maintainer:         Robert Helgesson <robert@rycee.net>
+category:           System
+build-type:         Simple
+extra-source-files: ChangeLog.md
 
 executable nixpkgs-firefox-addons
-  main-is:             Main.hs
-  other-modules:       Prelude, System.Nixpkgs.FirefoxAddons
+  main-is:          Main.hs
+  other-modules:
+    Prelude
+    System.Nixpkgs.FirefoxAddons
+
   build-depends:
-                aeson
-              , base-noprelude >=4.11
-              , directory
-              , hnix >= 0.13
-              , microlens-aeson
-              , microlens-platform
-              , relude >= 1.0.0
-              , text
-              , wreq >= 0.5
-  hs-source-dirs:      src
-  ghc-options:         -Wall
-  default-language:    Haskell2010
+    , aeson
+    , base-noprelude      >=4.11
+    , directory
+    , hnix                >=0.13
+    , microlens-aeson
+    , microlens-platform
+    , relude              >=1.0.0
+    , text
+    , wreq                >=0.5
+
+  hs-source-dirs:   src
+  default-language: Haskell2010
+  ghc-options:      -Wall

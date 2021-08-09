@@ -26,6 +26,7 @@ in haskellPackages.developPackage {
   root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
   modifier = drv:
     pkgs.haskell.lib.addBuildTools drv [
+      haskellPackages.cabal-fmt
       haskellPackages.cabal-install
       haskellPackages.haskell-language-server
       haskellPackages.hoogle
