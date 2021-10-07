@@ -135,6 +135,7 @@ licenses =
       (4814, AddonLicensePredefined "cc0"),
       (5296, AddonLicensePredefined "bsd3"),
       (6978, AddonLicensePredefined "cc-by-sa-30"),
+      (6979, AddonLicensePredefined "cc-by-30"),
       (6982, AddonLicensePredefined "cc-by-nc-sa-30"),
       (7551, AddonLicensePredefined "isc"),
       (7770, AddonLicensePredefined "agpl3")
