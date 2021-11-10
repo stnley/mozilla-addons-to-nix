@@ -12,12 +12,9 @@
         pkgs = nixpkgs.legacyPackages.${system};
         haskellPackages = pkgs.haskell.packages.ghc8104;
 
-        package = returnShellEnv:
-          import ./default.nix { inherit pkgs returnShellEnv; };
-
         outputs = {
-          defaultPackage = package false;
-          devShell = package true;
+          defaultPackage = import ./default.nix { inherit pkgs; };
+          devShell = import ./shell.nix { inherit pkgs; };
         };
       in outputs);
 }
