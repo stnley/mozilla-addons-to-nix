@@ -130,6 +130,7 @@ licenses =
       (12, AddonLicensePredefined "lgpl3"),
       (13, AddonLicensePredefined "gpl2"),
       (16, AddonLicensePredefined "lgpl21"),
+      (18, AddonLicensePredefined "bsd2"),
       (22, AddonLicensePredefined "mit"),
       (3338, AddonLicensePredefined "mpl20"),
       (4160, AddonLicensePredefined "asl20"),
