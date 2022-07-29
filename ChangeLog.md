@@ -1,6 +1,6 @@
 # Revision history for Mozilla Add-ons to Nix
 
-## Unreleased
+## Version 0.9.0 (2022-07-30)
 
 * Rename project to "Mozilla Add-ons to Nix" and executable to
   `mozilla-addons-to-nix`.
