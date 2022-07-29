@@ -10,11 +10,33 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        haskellPackages = pkgs.haskell.packages.ghc8104;
+        hpkgs = pkgs.haskell.packages.ghc902;
 
-        outputs = {
-          defaultPackage = import ./default.nix { inherit pkgs; };
-          devShell = import ./shell.nix { inherit pkgs; };
+        pFormat = pkgs.writeShellScriptBin "p-format" ''
+          shopt -s globstar
+          ${pkgs.haskellPackages.cabal-fmt}/bin/cabal-fmt -i **/*.cabal
+          ${pkgs.nixfmt}/bin/nixfmt **/*.nix
+          ${pkgs.ormolu}/bin/ormolu -i **/*.hs
+        '';
+
+        args = {
+          name = "mozilla-addons-to-nix";
+          root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
         };
-      in outputs);
+      in {
+        defaultPackage = hpkgs.developPackage args;
+
+        devShell = hpkgs.developPackage (args // {
+          returnShellEnv = true;
+          modifier = drv:
+            pkgs.haskell.lib.addBuildTools drv (with hpkgs; [
+              cabal-install
+              cabal2nix
+              haskell-language-server
+              hoogle
+
+              pFormat
+            ]);
+        });
+      });
 }

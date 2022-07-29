@@ -1,8 +1,8 @@
 cabal-version:      2.2
-name:               nixpkgs-firefox-addons
+name:               mozilla-addons-to-nix
 version:            0.8.1
 synopsis:           Tool generating a Nix package set of Firefox addons
-homepage:           https://gitlab.com/rycee/nixpkgs-firefox-addons
+homepage:           https://git.sr.ht/~rycee/mozilla-addons-to-nix
 license:            GPL-3.0-or-later
 license-file:       LICENSE
 author:             Robert Helgesson <robert@rycee.net>
@@ -11,7 +11,7 @@ category:           System
 build-type:         Simple
 extra-source-files: ChangeLog.md
 
-executable nixpkgs-firefox-addons
+executable mozilla-addons-to-nix
   main-is:          Main.hs
   other-modules:    System.Nixpkgs.FirefoxAddons
   build-depends:

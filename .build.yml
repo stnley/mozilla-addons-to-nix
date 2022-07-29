@@ -1,9 +1,16 @@
-image: nixos/latest
+image: nixos/unstable
 repositories:
   nixpkgs: https://nixos.org/channels/nixpkgs-unstable
 sources:
   - https://git.sr.ht/~rycee/mozilla-addons-to-nix
+secrets:
+  - 01ad357c-3214-4f73-bb7e-2441e440cc51
 tasks:
-  - build: |
-      cd mozilla-addons-to-nix
-      nix-build
+  - setup: |
+      nix-env -f '<nixpkgs>' -iA cachix
+      cachix use rycee
+  - build: >-
+      nix --extra-experimental-features 'nix-command flakes'
+      build -L ./mozilla-addons-to-nix
+  - cache: |
+      cachix push rycee result

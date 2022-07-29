@@ -1,4 +1,16 @@
-# Revision history for Nixpkg Firefox Add-ons
+# Revision history for Mozilla Add-ons to Nix
+
+## Unreleased
+
+* Rename project to "Mozilla Add-ons to Nix" and executable to
+  `mozilla-addons-to-nix`.
+
+* Switch to a fully Nix Flake development setup, use `nix develop` to
+  enter a suitable development environment. The old `default.nix` and
+  `shell.nix` files have been removed.
+
+* Move project to sourcehut. The old GitLab location has been
+  archived.
 
 ## Version 0.8.1 (2021-08-09)
 
