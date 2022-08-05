@@ -140,6 +140,7 @@ licenses =
       (6979, AddonLicensePredefined "cc-by-30"),
       (6982, AddonLicensePredefined "cc-by-nc-sa-30"),
       (7551, AddonLicensePredefined "isc"),
+      (7068, AddonLicensePredefined "zlib"),
       (7770, AddonLicensePredefined "agpl3")
     ]
 
