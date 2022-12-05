@@ -19,14 +19,13 @@
           ${pkgs.ormolu}/bin/ormolu -i **/*.hs
         '';
 
-        args = {
-          name = "mozilla-addons-to-nix";
-          root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
-        };
+        name = "mozilla-addons-to-nix";
+        root = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
       in {
-        defaultPackage = hpkgs.developPackage args;
+        packages.default = hpkgs.callCabal2nix name root { };
 
-        devShell = hpkgs.developPackage (args // {
+        devShell = hpkgs.developPackage {
+          inherit name root;
           returnShellEnv = true;
           modifier = drv:
             pkgs.haskell.lib.addBuildTools drv (with hpkgs; [
@@ -37,6 +36,6 @@
 
               pFormat
             ]);
-        });
+        };
       });
 }
