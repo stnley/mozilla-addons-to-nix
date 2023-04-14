@@ -24,7 +24,9 @@ The intended development flow is to use a Nix Flake development shell,
 e.g., using [Direnv](https://direnv.net/) or directly running
 
 ``` console
-$ nix develop
+$ nix \
+    --extra-experimental-features 'flakes nix-command' \
+    develop
 …
 ```
 
