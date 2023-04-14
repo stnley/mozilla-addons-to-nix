@@ -37,6 +37,12 @@ which can be run directly in the terminal.
 - `p-format` -- will format the project's Cabal, Haskell, and Nix
   code.
 
+To run the tool in the development environment:
+
+``` console
+$ cabal run mozilla-addons-to-nix -- infile.json outfile.json
+```
+
 ## License
 
 [GNU General Public License v3.0 or later](https://spdx.org/licenses/GPL-3.0-or-later.html)
