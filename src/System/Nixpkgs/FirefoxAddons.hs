@@ -50,7 +50,8 @@ data Hash = Hash
 
 data AddonFile = AddonFile
   { _addonFileUrl :: Text,
-    _addonFileHash :: Hash
+    _addonFileHash :: Hash,
+    _addonFilePermissions :: [Text]
   }
   deriving (Eq, Show)
 
@@ -90,6 +91,7 @@ instance FromJSON AddonFile where
     do
       _addonFileUrl <- obj .: "url"
       _addonFileHash <- parseHash =<< obj .: "hash"
+      _addonFilePermissions <- obj .: "permissions"
       return AddonFile {..}
 
 instance FromJSON AddonData where
@@ -183,6 +185,7 @@ addonDrv addon = "buildFirefoxXpiAddon" @@ fields
           optAttr "homepage" (mkStr <$> addon ^. addonHomepage)
             <> [("description", mkStr $ addon ^. addonDescription)]
             <> optAttr "license" (license <$> addon ^. addonLicense)
+            <> [("mozPermissions", mkList $ mkStr <$> (file ^. addonFilePermissions))]
             <> [("platforms", "platforms.all")]
 
 addonDrvs :: [AddonData] -> NExpr
