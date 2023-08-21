@@ -1,5 +1,11 @@
 # Revision history for Mozilla Add-ons to Nix
 
+## Version 0.10.0 (2023-08-21)
+
+* Write the add-on permissions to the package meta data. This is
+  intended to allow asserting that the package won't introduce
+  unexpected permissions.
+
 ## Version 0.9.0 (2022-07-30)
 
 * Rename project to "Mozilla Add-ons to Nix" and executable to

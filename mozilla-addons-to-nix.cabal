@@ -1,6 +1,6 @@
 cabal-version:      2.2
 name:               mozilla-addons-to-nix
-version:            0.9.0
+version:            0.10.0
 synopsis:           Tool generating a Nix package set of Firefox addons
 homepage:           https://git.sr.ht/~rycee/mozilla-addons-to-nix
 license:            GPL-3.0-or-later
