@@ -13,4 +13,6 @@ tasks:
       nix --extra-experimental-features 'nix-command flakes'
       build -L ./mozilla-addons-to-nix
   - cache: |
-      cachix push rycee result
+      if [[ -e $HOME/.config/cachix/cachix.dhall ]]; then
+        cachix push rycee result
+      fi
